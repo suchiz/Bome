@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class FirstPersonController : MonoBehaviour {
 
@@ -20,16 +21,17 @@ public class FirstPersonController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 
 		//Move right + left
 		float moveX = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
 		float moveZ = Input.GetAxis("Vertical") * speed * Time.deltaTime;
 		transform.Translate (moveX, 0, moveZ);
 
+		//deltaVelocityY = abs (rb.velocity.y - precedentVelocityY);
 
 		//Jump
-		if (Input.GetKeyDown (KeyCode.Space) && !jumping) {
+		if (Input.GetKeyDown (KeyCode.Space) && !jumping && Math.Abs(rb.velocity.y) < 0.1) {
 			rb.velocity += jump;
 			jumping = true;
 		}
