@@ -6,11 +6,14 @@ using UnityEngine.UI;
 public class PauseMenu : MonoBehaviour {
 
 	public GameObject pauseMenu;
+	public GameObject settingsMenu;
 	CameraController cc;
 	private bool onPause = false;
+	private bool onSettings = false;
 
 	void Start () {
 		pauseMenu.SetActive(false);
+		settingsMenu.SetActive(false);
 		Cursor.lockState = CursorLockMode.Locked;
 		cc = (CameraController)GameObject.Find ("Main Camera").GetComponent ("CameraController");
 	}
@@ -18,16 +21,18 @@ public class PauseMenu : MonoBehaviour {
 
 	void Update () {
 		
-		if (Input.GetKeyDown ("escape") && !onPause) {
+		if (Input.GetKeyDown ("escape") && !onPause && !onSettings) {
 			Cursor.lockState = CursorLockMode.None;
 			pauseMenu.SetActive (true);
+			settingsMenu.SetActive (false);
 			cc.enabled = false;
 			Time.timeScale = 0;
 			onPause = true;
-		} else if (Input.GetKeyDown ("escape") && onPause) {
+		} else if (Input.GetKeyDown ("escape") && onPause && !onSettings) {
 			continuePressed ();
+		} else if (Input.GetKeyDown ("escape") && onPause && onSettings) {
+			backPressed ();
 		}
-
 
 
 	}
@@ -35,6 +40,7 @@ public class PauseMenu : MonoBehaviour {
 	public void continuePressed (){
 		Cursor.lockState = CursorLockMode.Locked;
 		pauseMenu.SetActive(false);
+		settingsMenu.SetActive(false);
 		Time.timeScale = 1;
 		cc.enabled = true;
 		onPause = false;
@@ -48,5 +54,17 @@ public class PauseMenu : MonoBehaviour {
 		Application.LoadLevel (0);
 		Time.timeScale = 1;
 		cc.enabled = true;
+	}
+
+	public void settingPressed(){
+		settingsMenu.SetActive(true);
+		pauseMenu.SetActive(false);
+		onSettings = true;
+	}
+
+	public void backPressed(){
+		settingsMenu.SetActive(false);
+		pauseMenu.SetActive(true);
+		onSettings = false;
 	}
 }
