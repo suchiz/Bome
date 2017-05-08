@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour {
 
-	public Canvas pauseMenu;
+	public GameObject pauseMenu;
 	CameraController cc;
 
 
 	void Start () {
-		pauseMenu.enabled = false;
+		pauseMenu.SetActive(false);
 		Cursor.lockState = CursorLockMode.Locked;
 		cc = (CameraController)GameObject.Find ("Main Camera").GetComponent ("CameraController");
 	}
@@ -20,14 +20,14 @@ public class PauseMenu : MonoBehaviour {
 		
 		if (Input.GetKeyDown ("escape")) {
 			Cursor.lockState = CursorLockMode.None;
-			pauseMenu.enabled = true;
+			pauseMenu.SetActive(true);
 			cc.enabled = false;
 			Time.timeScale = 0;
 		}
 	}
 
 	public void continuePressed (){
-		pauseMenu.enabled = false;
+		pauseMenu.SetActive(false);
 		Time.timeScale = 1;
 		cc.enabled = true;
 	}
