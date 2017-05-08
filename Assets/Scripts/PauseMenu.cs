@@ -7,7 +7,7 @@ public class PauseMenu : MonoBehaviour {
 
 	public GameObject pauseMenu;
 	CameraController cc;
-
+	private bool onPause = false;
 
 	void Start () {
 		pauseMenu.SetActive(false);
@@ -18,18 +18,26 @@ public class PauseMenu : MonoBehaviour {
 
 	void Update () {
 		
-		if (Input.GetKeyDown ("escape")) {
+		if (Input.GetKeyDown ("escape") && !onPause) {
 			Cursor.lockState = CursorLockMode.None;
-			pauseMenu.SetActive(true);
+			pauseMenu.SetActive (true);
 			cc.enabled = false;
 			Time.timeScale = 0;
+			onPause = true;
+		} else if (Input.GetKeyDown ("escape") && onPause) {
+			continuePressed ();
 		}
+
+
+
 	}
 
 	public void continuePressed (){
+		Cursor.lockState = CursorLockMode.Locked;
 		pauseMenu.SetActive(false);
 		Time.timeScale = 1;
 		cc.enabled = true;
+		onPause = false;
 	}
 
 	public void quitPressed (){
