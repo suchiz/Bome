@@ -12,18 +12,16 @@ public class HandleChrono : MonoBehaviour {
 		chrono = GetComponent<Text> ();
 		chronoCount = 0;
 		displayChrono ();
-		Debug.Log ("Here : " + chrono.text);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		chronoCount += Time.deltaTime;
+		chronoCount = Time.timeSinceLevelLoad;
 		displayChrono ();
-		Debug.Log ("Update : " + chrono.text);
 	}
 
 	void displayChrono()
 	{
-		chrono.text = chronoCount.ToString();
+		chrono.text = "Time: " + chronoCount.ToString("F2");
 	}
 }
