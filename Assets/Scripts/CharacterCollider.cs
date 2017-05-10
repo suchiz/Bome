@@ -73,36 +73,45 @@ public class CharacterCollider : MonoBehaviour {
 		// Read the file and display it line by line.
 		string line;
 		StreamReader file = new StreamReader(fileNameScore);
-		while ((line = file.ReadLine ()) != null && cpt < 5) {
+		while ((line = file.ReadLine ()) != null && cpt < 10) {
 			listScoreText.text += line + "\n";
 			cpt++;
 		}
 		file.Close();
 	}
 
+
 	void insert (string timeStr, string pseudoInput){
-		
+
+		bool stop = false; // we found the index
 		var time_parts = timeStr.Split (':');// split the score to take apart minutes/secondes/mill
 		List<string> list = new List<string>();
-		list = File.ReadAllLines (fileNameScore).ToList (); //put all the lines in a list
-
-		StreamReader file = new StreamReader (fileNameScore);
-		string line;
-		bool stop = false; //found the index
+		list = File.ReadAllLines (fileNameScore).ToList ();
 		int a, b, index = 0;
 
-		while ((line = file.ReadLine ()) != null && !stop) {
-			var score_parts = line.Split (':');
-			for (int i = 0; i < 2 && !stop; i++) {
-				a = Int32.Parse (time_parts [i]);//i because min:sec:mill
-				b = Int32.Parse (score_parts [i + 1]);//i+1 because speudo:min:sec:mill
-				stop = ( a < b); 
+		for (int i = 0; i < list.Count && !stop; i++) {
+			var score_parts = list [i].Split (':');// split pseudo/min/sec/mil
+
+			a = Int32.Parse (time_parts [0]);
+			b = Int32.Parse (score_parts [1]);
+			stop = (a < b);
+			if (a == b) {
+				a = Int32.Parse (time_parts [1]);
+				b = Int32.Parse (score_parts [2]);
+				stop = (a < b);
+				if (a == b) {
+					a = Int32.Parse (time_parts [2]);
+					b = Int32.Parse (score_parts [3]);
+					stop = (a < b);
+				}
 			}
 			index++;
 		}
+		if (stop)
+			list.Insert (index - 1, (pseudoInput + ": " + timeStr));
+		else
+			list.Insert (index, (pseudoInput + ": " + timeStr));
 
-		list.Insert (index, (pseudoInput + " : " + timeStr));
 		File.WriteAllLines (fileNameScore, list.ToArray());
 	}
-
 }
