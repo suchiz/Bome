@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using System;
+using System.Linq;
 
 public class CharacterCollider : MonoBehaviour {
 
@@ -33,11 +35,8 @@ public class CharacterCollider : MonoBehaviour {
 			allowEnter = false;
 
 			//We save the score in a file     
-			using(StreamWriter sw = File.AppendText(fileNameScore))
-			{
-				string timeStr = chronoText.GetComponent<HandleChrono> ().getStrTime ();
-				sw.WriteLine(pseudoInput.text + " : " + timeStr);          
-			}
+			string timeStr = chronoText.GetComponent<HandleChrono> ().getStrTime ();
+			insert (timeStr, pseudoInput.text);
 
 			winText.SetActive (false);
 
@@ -68,14 +67,42 @@ public class CharacterCollider : MonoBehaviour {
 
 	void displayScore()
 	{
+		int cpt = 0;
 		listScoreText.text = "";
 
 		// Read the file and display it line by line.
 		string line;
 		StreamReader file = new StreamReader(fileNameScore);
-		while((line = file.ReadLine()) != null)
+		while ((line = file.ReadLine ()) != null && cpt < 5) {
 			listScoreText.text += line + "\n";
-
+			cpt++;
+		}
 		file.Close();
 	}
+
+	void insert (string timeStr, string pseudoInput){
+		
+		var time_parts = timeStr.Split (':');// split the score to take apart minutes/secondes/mill
+		List<string> list = new List<string>();
+		list = File.ReadAllLines (fileNameScore).ToList (); //put all the lines in a list
+
+		StreamReader file = new StreamReader (fileNameScore);
+		string line;
+		bool stop = false; //found the index
+		int a, b, index = 0;
+
+		while ((line = file.ReadLine ()) != null && !stop) {
+			var score_parts = line.Split (':');
+			for (int i = 0; i < 2 && !stop; i++) {
+				a = Int32.Parse (time_parts [i]);//i because min:sec:mill
+				b = Int32.Parse (score_parts [i + 1]);//i+1 because speudo:min:sec:mill
+				stop = ( a < b); 
+			}
+			index++;
+		}
+
+		list.Insert (index, (pseudoInput + " : " + timeStr));
+		File.WriteAllLines (fileNameScore, list.ToArray());
+	}
+
 }
