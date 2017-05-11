@@ -14,11 +14,12 @@ public class CharacterCollider : MonoBehaviour {
 	public Canvas scoreCanvas;
 	public Text listScoreText;
 
+
 	private string fileNameScore;
 	private FirstPersonController fp;
 	private CameraController cc;
-
 	private bool allowEnter = false;
+
 	void Start (){
 		winText.SetActive (false);
 		fileNameScore = "score.txt";
@@ -107,6 +108,7 @@ public class CharacterCollider : MonoBehaviour {
 			}
 			index++;
 		}
+
 		if (stop)
 			list.Insert (index - 1, (pseudoInput + ": " + timeStr));
 		else

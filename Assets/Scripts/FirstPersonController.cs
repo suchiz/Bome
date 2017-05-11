@@ -9,6 +9,7 @@ public class FirstPersonController : MonoBehaviour {
 	public float speed = 5.0f;
 	public float jumpForce = 6.5f;
 	public Rigidbody rb;
+
 	private Vector3 jump;
 
 
