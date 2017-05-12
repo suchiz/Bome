@@ -8,14 +8,14 @@ public class HandleChrono : MonoBehaviour {
 	Text chrono;
 	private bool win = false;
 	private float chronoCount;
-
+	private float startime;
 	// Use this for initialization
 	void Start () {
 		chrono = GetComponent<Text> ();
-		chronoCount = 0;
+		startime = Time.time;
 		displayChrono ();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 	}
@@ -23,7 +23,7 @@ public class HandleChrono : MonoBehaviour {
 	void FixedUpdate()
 	{
 		if (!win) {
-			chronoCount = Time.timeSinceLevelLoad;
+			chronoCount = Time.time - startime;
 			displayChrono ();
 			return;
 		}
@@ -49,6 +49,10 @@ public class HandleChrono : MonoBehaviour {
 
 		return timeStr;
 		
+	}
+
+	public void resetTime () {
+		startime = Time.time;
 	}
 		
 }

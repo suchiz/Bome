@@ -5,10 +5,13 @@ using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour {
 
+
+	public GameObject respawnpoint;
 	public GameObject pauseMenu;
 	public GameObject settingsMenu;
 	private CameraController cc;
 	private AudioSource audio;
+	private Quaternion spawnRot;
 	private bool onPause = false;
 	private bool onSettings = false;
 
@@ -18,6 +21,7 @@ public class PauseMenu : MonoBehaviour {
 		Cursor.lockState = CursorLockMode.Locked;
 		cc = (CameraController)GameObject.Find ("Main Camera").GetComponent ("CameraController");
 		audio = (AudioSource)GameObject.Find ("Main Camera").GetComponent<AudioSource> ();
+		spawnRot = transform.rotation;
 	}
 	
 
@@ -30,7 +34,6 @@ public class PauseMenu : MonoBehaviour {
 			cc.enabled = false;
 			Time.timeScale = 0;
 			onPause = true;
-			audio.Pause ();
 		} else if (Input.GetKeyDown ("escape") && onPause && !onSettings) {
 			continuePressed ();
 		} else if (Input.GetKeyDown ("escape") && onPause && onSettings) {
@@ -47,7 +50,7 @@ public class PauseMenu : MonoBehaviour {
 		Time.timeScale = 1;
 		cc.enabled = true;
 		onPause = false;
-		audio.Play ();
+	
 	}
 
 	public void quitPressed (){
@@ -55,9 +58,9 @@ public class PauseMenu : MonoBehaviour {
 	}
 
 	public void restartPressed(){
-		Application.LoadLevel (0);
-		Time.timeScale = 1;
-		cc.enabled = true;
+		transform.position = respawnpoint.transform.position;
+		transform.rotation = Quaternion.identity;
+		continuePressed ();
 	}
 
 	public void settingPressed(){
