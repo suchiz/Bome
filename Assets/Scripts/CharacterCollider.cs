@@ -116,4 +116,13 @@ public class CharacterCollider : MonoBehaviour {
 
 		File.WriteAllLines (fileNameScore, list.ToArray());
 	}
+
+	public void restartPressed(){
+		winText.SetActive (false);
+		scoreCanvas.gameObject.SetActive(false);
+		cc.enabled = true;
+		fp.enabled = true;
+		Cursor.lockState = CursorLockMode.Locked;
+		chronoText.GetComponent<HandleChrono> ().enabled = true;
+	}
 }

@@ -6,15 +6,17 @@ public class SoundMenu : MonoBehaviour {
 
 	public AudioClip click;
 	public AudioClip hover;
-	public AudioSource source;
+	public AudioSource menusource;
+
 
 	public void OnClick (){
-		source.PlayOneShot (click);
+		menusource.PlayOneShot (click);
 	}
 
 	public void OnHover (){
-		source.PlayOneShot (hover);
+		menusource.PlayOneShot (hover);
 	}
+
 
 
 }
