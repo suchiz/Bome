@@ -11,6 +11,7 @@ public class FirstPersonController : MonoBehaviour {
 	public Rigidbody rb;
 
 	private Vector3 jump;
+	private bool canJump = false;
 
 
 	void Start () {
@@ -29,13 +30,15 @@ public class FirstPersonController : MonoBehaviour {
 		//deltaVelocityY = abs (rb.velocity.y - precedentVelocityY);
 
 		//Jump
-		if (Input.GetKeyDown (KeyCode.Space) && Math.Abs(rb.velocity.y) < 0.1) {
+		if (Input.GetKeyDown (KeyCode.Space) && canJump) {
 			rb.velocity += jump;
+
+			canJump = false;
 		}
-
-
 		//Quit first person
-	
-		
+	}
+
+	void OnTriggerEnter (Collider other) {
+		canJump = true;
 	}
 }
